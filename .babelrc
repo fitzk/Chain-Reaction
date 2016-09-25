@@ -1,0 +1,24 @@
+{
+  "presets": [
+    "es2015",
+    "react",
+    "stage-0"
+  ],
+  "plugins": [
+    "transform-react-constant-elements",
+    "transform-react-jsx",
+    "transform-runtime",
+    "transform-decorators-legacy",
+    "transform-flow-strip-types",
+    "transform-class-properties",
+    "react-hot-loader/babel",
+    "transform-es2015-spread"
+  ],
+  "highlightCode": true,
+  "env": {
+    "production": {
+      "plugins": [
+      ]
+    }
+  }
+}
