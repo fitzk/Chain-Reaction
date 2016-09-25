@@ -2,7 +2,7 @@ import React, {Component, Proptypes} from 'react';
 import Cell from './cell';
 import '../index.scss';
 
-const GameBoard = props => {
+export const populateCells = () => {
     const indexes = Array.from(Array(100).keys());
 
     const top_row = [1,2,3,4,5,6,7,8];
@@ -14,22 +14,31 @@ const GameBoard = props => {
     const cells = indexes.map(index => {
         for (var idx of [...corners]){
             if(index==idx) {
-                return {'index': index, 'mass': 2};
+                return {'index': index, "critical_mass": 2, mass: []};
             }
         }
         for (idx of [...top_row,
-                ...left_col,
-                ...right_col,
-                ...bottom_row]){
+            ...left_col,
+            ...right_col,
+            ...bottom_row]){
             if(index==idx) {
-                return {'index': index, 'mass': 3};
+                return {index: index, critical_mass: 3, mass: [{index: 0, color:'coral'},
+                    {index: 1, color:'coral'}]};
             }
         }
-        return {'index': index, 'mass': 4};
+        return {index: index, critical_mass: 4, mass: [{index: 0, color:'green'},
+            {index: 1, color:'green'}, {index: 2, color:'green'}]};
     });
-    const renderBoard = cells.map((cell) =>
-        <Cell key={cell.index}><div className="content">{cell.mass}</div></Cell>);
-    return <div className="game-board">{renderBoard}</div>
+
+    return cells;
+};
+
+const GameBoard = props => {
+    const cells = populateCells();
+    const renderedBoard = cells.map((cell) =>
+        <Cell key={cell.index}
+              mass={cell.mass}/>);
+    return <div className="game-board">{renderedBoard}</div>
 };
 
 export default GameBoard;

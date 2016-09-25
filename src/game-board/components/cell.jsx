@@ -1,9 +1,9 @@
 import React, {Component, Proptypes} from 'react';
-import Player from './player';
+import Cube from './cube';
 
 const Cell = props => {
- //   const players = props.players.map(player => <Player/>);
-    return <div className="cell">{props.children}</div>;
+   const cubes = props.mass.map(cube => <Cube key={cube.index}className={`${cube.color} cube`}/>);
+    return <div className="cell"> {cubes} </div>;
 };
 
 export default Cell;

@@ -22,26 +22,29 @@ body {
   width: 58px;
   margin: auto;
   background: lightcyan;
-  align-items: center;
   border-color: white;
-  text-align: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: space-between;
 }
 
 .cell:hover {
-  background-color: coral;
+  background-color: darkcyan;
   opacity: .5;
 }
 
-.content {
-  position: relative;
-  top: 14px;
-  opacity: .2;
-  font-family: "Arial Narrow";
-  font-size: 26px;
-  color: coral;
-  vertical-align: middle;
+.green {
+  background-color: lightgreen;
 }
 
-.content:hover {
-  color: lightcyan;
+.coral {
+  background-color: coral;
+}
+
+.cube {
+  height: 27px;
+  width: 27px;
+  margin: 1px;
 }
