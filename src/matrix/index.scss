@@ -1,0 +1,51 @@
+
+body {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 100px;
+  background-color: lightcoral;
+}
+
+.matrix {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background: lightcoral;
+  height: 600px;
+  width: 600px;
+  border: white;
+  opacity: 1;
+}
+
+.cell {
+  height: 58px;
+  width: 58px;
+  margin: auto;
+  background: lightcyan;
+  border-color: lightcoral;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: space-between;
+}
+
+.cell:hover {
+  background-color: darkcyan;
+  opacity: .5;
+}
+
+.green {
+  background-color: lightgreen;
+}
+
+.coral {
+  background-color: coral;
+}
+
+.cube {
+  height: 27px;
+  width: 27px;
+  margin: 1px;
+}
