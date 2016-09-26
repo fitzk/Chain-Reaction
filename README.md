@@ -3,7 +3,7 @@
 JavaScript, (React + Redux) implementation of the game Chain Reaction.
 
 # STATUS
-This project is currently in active development.
+In development
 
 # GET 'R RUNNIN
 
