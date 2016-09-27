@@ -10,7 +10,7 @@ const initialState = {
 export const cubes = (state = [], action) => {
 
     switch(action.type) {
-        case 'ADD_CUBE':
+        case ADD_CUBE:
             return Object.assign({}, state, {
                     cubes: [...state.cubes, action.cube]
                 });
@@ -26,7 +26,7 @@ export const cells = (state={}, action) => {
                 cells: state.cells.map((cell, index)=> {
                     if (index === action.cube.cell_index) {
                         return Object.assign({}, cell, {
-                            mass: [...cell.mass, action.cube.index]
+                            mass: [...cell.mass, action.cube]
                         });
                     }
                     return cell;

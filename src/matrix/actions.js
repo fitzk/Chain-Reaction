@@ -33,12 +33,13 @@ export function resetBoard(cells) {
 export const addCubeToCell = (cube) => {
     return(dispatch, getState)=>{
         const cell = getState().cells[cube.cell_index];
-       // if(cell.mass.length + 1 < cell.critical_mass) {
-            dispatch(addCube(cube));
-      //  }
-        console.log('add cube');
+        //if (cell.mass.length < cell.critical_mass) {
+          dispatch(addCube(cube));
+       // }
     };
 };
+
+
 
 export const generateBoard = () => {
     return (dispatch, getState) => {
