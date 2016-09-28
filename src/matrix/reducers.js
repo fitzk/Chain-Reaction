@@ -7,18 +7,6 @@ const initialState = {
 };
 
 
-export const cubes = (state = [], action) => {
-
-    switch(action.type) {
-        case ADD_CUBE:
-            return Object.assign({}, state, {
-                    cubes: [...state.cubes, action.cube]
-                });
-        default:
-            return state;
-    }
-};
-
 export const cells = (state={}, action) => {
     switch(action.type) {
         case ADD_CUBE:

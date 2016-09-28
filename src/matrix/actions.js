@@ -24,22 +24,34 @@ export function clearCell(index) {
 
 export function resetBoard(cells) {
     return {
-        type: 'RESET_BOARD',
+        type: RESET_BOARD,
         cells,
     }
 }
 
 
-export const addCubeToCell = (cube) => {
-    return(dispatch, getState)=>{
-        const cell = getState().cells[cube.cell_index];
-        //if (cell.mass.length < cell.critical_mass) {
-          dispatch(addCube(cube));
-       // }
-    };
+export const addCubeToCell = (cell) => {
+
+       const cells = state.cells.cells;
+      //console.log(cell.mass.length, ' === ', cell.critical_mass, ' = ', cell.mass.length === cell.critical_mass);
+      if (cell.mass.length === cell.critical_mass) {
+        let left = cell.index-1;
+        //left = left.index - 1;
+        const right = cell;
+        const rightCell = right.index - 1;
+        addCubeToCell(cells[42]);
+      }
+
+      let cube = {
+        index: cell.mass.length,
+        cell_index: cell.index,
+        color: 'green',
+      };
+     dispatch(addCube(cube)).then({
+       console.log('Added to cell: ', getState().cells.cells[cell.index]);
+     });
+  };
 };
-
-
 
 export const generateBoard = () => {
     return (dispatch, getState) => {

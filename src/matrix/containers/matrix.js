@@ -9,17 +9,10 @@ class Matrix extends Component {
     constructor(props){
         super(props);
     }
-    componentWillMount(){
+    componentWillMount() {
         this.props.generateBoard();
     }
-    addCube(mass,index){
-    let cube = {
-      index: mass.length,
-      cell_index: index,
-      color: 'green',
-    };
-    this.props.addCubeToCell(cube);
-  }
+
 
     render() {
         let renderedBoard = [];
@@ -27,14 +20,12 @@ class Matrix extends Component {
         if(this.props.cells) {
             let cells = [...this.props.cells];
             renderedBoard = cells.map((cell) => {
-             // console.log(cell.index);
                 return (
                   <Cell
-                  addCube={this.addCube.bind(this, cell.mass, cell.index)}
+                  addCube={this.props.addCubeToCell.bind(this,cell)}
                   key={cell.index}
                   mass={cell.mass}
-                             critical_mass={cell.critical_mass}
-                />);
+                  critical_mass={cell.critical_mass}/>);
             });
         }
         return <div className="matrix">{renderedBoard}</div>;
