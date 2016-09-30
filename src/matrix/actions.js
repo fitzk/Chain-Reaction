@@ -1,13 +1,22 @@
-
+import {Record} from 'immutable';
 export const ADD_CUBE = 'ADD_CUBE';
 export const GET_CUBE = 'GET_CUBE';
 export const CRITICAL_MASS = 'CRITICAL_MASS';
 export const CLEAR_CELL = 'CLEAR_CELL';
 export const RESET_BOARD = 'RESET_BOARD';
+export const SET_ADJACENT_CELLS = 'SET_ADJACENT_CELLS';
 
+
+const Cube = new Record({
+  index: undefined,
+  cell_index: undefined,
+  color: undefined,
+});
 
 export function addCube(cube) {
-    return { type: ADD_CUBE, cube }
+
+    return {type: ADD_CUBE, cube};
+
 }
 
 export function hitCriticalMass(boolean) {
@@ -23,40 +32,122 @@ export function clearCell(index) {
 }
 
 export function resetBoard(cells) {
-    return {
-        type: RESET_BOARD,
-        cells,
+  return {
+    type: RESET_BOARD,
+    cells
+  }
+}
+
+export function setAdjacentCells(adjacentCells) {
+  return {
+    type: SET_ADJACENT_CELLS,
+    adjacentCells,
+  }
+}
+export function helper(cube, cell, cells) {
+  addCubeToCell(cells[cell.index-1])();
+  addCubeToCell(cells[cell.index+1])();
+};
+
+export function  addCubeToCell (cell) {
+  const cube = makeCube(cell, 'green');
+  return (dispatch, getState) => {
+    if (cell.mass.length + 1 < cell.critical_mass) {
+      return dispatch(addCube(cube));
+    } else {
+      const cells = getState().cells.cells;
+      return helper(cube, cell, cells);
     }
+  }
 }
 
 
-export const addCubeToCell = (cell) => {
 
-       const cells = state.cells.cells;
-      //console.log(cell.mass.length, ' === ', cell.critical_mass, ' = ', cell.mass.length === cell.critical_mass);
-      if (cell.mass.length === cell.critical_mass) {
-        let left = cell.index-1;
-        //left = left.index - 1;
-        const right = cell;
-        const rightCell = right.index - 1;
-        addCubeToCell(cells[42]);
-      }
+// export const addCubeToCell = (cell) => {
+//   return (dispatch, getState) => {
+//     const cube = makeCube(cell, 'green');
+//     if (!checkCell(cell)) {
+//       dispatch(addCube(cube));
+//     } else {
+//       const cells = getState().cells.cells;
+//       let stillChecking = true;
+//       while (stillChecking) {
+//         console.log('CHECKING AGAIN');
+//         for (var celly of cells) {
+//           if (checkCell(celly)) {
+//             dispatch(clearCell(celly.index));
+//             if(cells.indexOf(celly) > 0) {
+//               const leftCell = cells[cells.indexOf(celly) - 1];
+//                 dispatch(addCube(makeCube(leftCell, 'green')));
+//             }
+//             if(cells.indexOf(celly) < 99){
+//               dispatch(addCube(makeCube(cells[cells.indexOf(celly) + 1], 'green')));
+//             }
+//             if(cells.indexOf(celly) > 9) {
+//               dispatch(addCube(makeCube(cells[cells.indexOf(celly) - 10], 'green')));
+//             }
+//             if(cells.indexOf(celly) < 90) {
+//               dispatch(addCube(makeCube(cells[cells.indexOf(celly) + 10], 'green')));
+//             }
+//           }
+//           if (cells.indexOf(celly) === cells.length-1) {
+//             stillChecking = false;
+//           }
+//         }
+//       }
+//     }
+//   }
+// };
 
-      let cube = {
+
+
+export const checkCell=(cell)=>{
+  if (cell.mass.length + 1 === cell.critical_mass){
+    return true;
+  }
+  return false;
+};
+
+export const makeCube = (cell, color) => {
+  if(cell){
+    if(cell.index > -1 || cell.index < 100) {
+      return new Cube({
         index: cell.mass.length,
         cell_index: cell.index,
-        color: 'green',
-      };
-     dispatch(addCube(cube)).then({
-       console.log('Added to cell: ', getState().cells.cells[cell.index]);
-     });
-  };
+        color: color,
+      });
+    }
+  }
 };
+
+export const mapAdjacentCells = () => {
+  return(dispatch, getState) => {
+    const indexes = Array.from(Array(100).keys());
+    let adjacentCells = [];
+    for (var index of indexes) {
+      let neighbors = [];
+      if (index - 1 > -1) {
+        neighbors.push(index - 1);
+      }
+      if (index + 1 < 100) {
+        neighbors.push(index + 1);
+      }
+      if (index - 10 > -1) {
+        neighbors.push(index - 10);
+      }
+      if (index + 10 < 100) {
+        neighbors.push(index + 10);
+      }
+      adjacentCells.push(neighbors);
+    }
+    dispatch(setAdjacentCells(adjacentCells));
+  }
+};
+
 
 export const generateBoard = () => {
     return (dispatch, getState) => {
         const indexes = Array.from(Array(100).keys());
-
         const top_row = [1, 2, 3, 4, 5, 6, 7, 8];
         const left_col = [10, 20, 30, 40, 50, 60, 70, 80];
         const right_col = [19, 29, 39, 49, 59, 69, 79, 89];
@@ -66,7 +157,7 @@ export const generateBoard = () => {
         const cells = indexes.map(index => {
             for (var idx of [...corners]) {
                 if (index == idx) {
-                    return {index: index, critical_mass: 2, mass: []};
+                    return {critical_mass: 2, mass: []};
                 }
             }
             for (idx of [...top_row,
@@ -74,17 +165,19 @@ export const generateBoard = () => {
                 ...right_col,
                 ...bottom_row]) {
                 if (index == idx) {
-                    return {index: index, critical_mass: 3, mass: []};
+                    return {critical_mass: 3, mass: []};
                 }
             }
-            return {index: index, critical_mass: 4, mass: []};
+            return {critical_mass: 4, mass: []};
         });
 
         dispatch(resetBoard(cells));
     }
 };
 
-export const mapDispatchToProps={
+
+export const mapDispatchToProps = {
     generateBoard,
     addCubeToCell,
+    mapAdjacentCells,
 };

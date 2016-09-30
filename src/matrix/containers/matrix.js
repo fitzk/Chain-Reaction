@@ -1,34 +1,49 @@
 import { connect } from 'react-redux';
-import React, {Component, Proptypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 import Cell from '../components/cell';
 import '../index.scss';
-import mapStateToProps from '../selectors';
 import {mapDispatchToProps} from '../actions';
+import _ from 'lodash';
+
+
+export const mapStateToProps = state =>{
+  return {
+    cells: state.cells,
+    adjacentCells: state.adjacentCells,
+  }
+};
+
 
 class Matrix extends Component {
     constructor(props){
         super(props);
     }
-    componentWillMount() {
-        this.props.generateBoard();
+    componentDidMount() {
+      this.props.generateBoard();
+      this.props.mapAdjacentCells();
     }
-
-
+   componentWillReceiveProps(nextProps){
+     if(_.isEmpty(this.props.cells)){
+       this.props.generateBoard();
+     }
+    }
+    shouldComponentUpdate(nextProps){
+      if(this.props !== nextProps){
+        return true;
+      }
+    }
     render() {
-        let renderedBoard = [];
-
-        if(this.props.cells) {
-            let cells = [...this.props.cells];
-            renderedBoard = cells.map((cell) => {
-                return (
-                  <Cell
-                  addCube={this.props.addCubeToCell.bind(this,cell)}
-                  key={cell.index}
-                  mass={cell.mass}
-                  critical_mass={cell.critical_mass}/>);
-            });
-        }
-        return <div className="matrix">{renderedBoard}</div>;
+      let cells = this.props.cells;
+      let renderedBoard = [];
+       for ( var idx in cells) {
+         let cell = cells[idx];
+        renderedBoard.push(<Cell
+           addCube={this.props.addCubeToCell.bind(this,cell)}
+           key={idx}
+           mass={cell.mass}
+           critical_mass={cell.critical_mass}/>);
+       }
+      return <div className="matrix">{renderedBoard}</div>;
 
     }
 }

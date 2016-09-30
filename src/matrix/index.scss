@@ -32,8 +32,7 @@ body {
 }
 
 .cell:hover {
-  background-color: lightgreen;
-  opacity: 1;
+  background-color: white;
 }
 
 .green {
@@ -45,7 +44,10 @@ body {
 }
 
 .cube {
+  position: relative;
+  z-index: 2;
   height: 27px;
   width: 27px;
   margin: 1px;
+  transition-delay: 20000ms;
 }
