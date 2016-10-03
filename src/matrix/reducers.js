@@ -18,9 +18,8 @@ export const adjacentCells = (state={}, action) => {
 
 export const cells = (state={}, action) => {
     switch(action.type) {
-        case ADD_CUBE:
-            return Object.assign({}, state,
-             state.cells.map((cell, index)=> {
+      case ADD_CUBE:
+            return Object.assign({}, state, action.cells.map((cell, index)=> {
                 if (index === action.cube.cell_index) {
                   return Object.assign({}, cell, {
                     mass: [...cell.mass, action.cube]

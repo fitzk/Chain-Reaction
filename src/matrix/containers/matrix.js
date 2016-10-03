@@ -38,9 +38,10 @@ class Matrix extends Component {
        for ( var idx in cells) {
          let cell = cells[idx];
         renderedBoard.push(<Cell
-           addCube={this.props.addCubeToCell.bind(this,cell)}
+           addCubeToCell={() => this.props.addCubeToCell(cell)}
            key={idx}
            mass={cell.mass}
+           cell = {cell}
            critical_mass={cell.critical_mass}/>);
        }
       return <div className="matrix">{renderedBoard}</div>;

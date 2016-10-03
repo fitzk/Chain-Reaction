@@ -13,9 +13,9 @@ const Cube = new Record({
   color: undefined,
 });
 
-export function addCube(cube) {
+export function addCube(cells, cube) {
 
-    return {type: ADD_CUBE, cube};
+    return {type: ADD_CUBE, cells, cube};
 
 }
 
@@ -50,13 +50,17 @@ export function helper(cube, cell, cells) {
 };
 
 export function  addCubeToCell (cell) {
-  const cube = makeCube(cell, 'green');
+
   return (dispatch, getState) => {
+    const cells =  Object.keys( getState().cells).map(key =>  getState().cells[key]);
+    console.log();
+
+    const cube = makeCube(cell, cells.indexOf(cell), 'green');
     if (cell.mass.length + 1 < cell.critical_mass) {
-      return dispatch(addCube(cube));
+    return dispatch(addCube(cells, cube));
     } else {
       const cells = getState().cells.cells;
-      return helper(cube, cell, cells);
+    //  return helper(cube, cell, cells);
     }
   }
 }
@@ -108,15 +112,14 @@ export const checkCell=(cell)=>{
   return false;
 };
 
-export const makeCube = (cell, color) => {
+export const makeCube = (cell, index, color) => {
   if(cell){
-    if(cell.index > -1 || cell.index < 100) {
-      return new Cube({
+      return {
         index: cell.mass.length,
-        cell_index: cell.index,
+        cell_index: index,
         color: color,
-      });
-    }
+      };
+
   }
 };
 
@@ -125,6 +128,7 @@ export const mapAdjacentCells = () => {
     const indexes = Array.from(Array(100).keys());
     let adjacentCells = [];
     for (var index of indexes) {
+      console.log(index);
       let neighbors = [];
       if (index - 1 > -1) {
         neighbors.push(index - 1);
