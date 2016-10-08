@@ -1,7 +1,9 @@
 import {Record} from 'immutable';
+import 'babel-polyfill';
 export const ADD_CUBE = 'ADD_CUBE';
 export const GET_CUBE = 'GET_CUBE';
 export const CRITICAL_MASS = 'CRITICAL_MASS';
+export const CLICK_CELL = 'CLICK_CELL';
 export const CLEAR_CELL = 'CLEAR_CELL';
 export const RESET_BOARD = 'RESET_BOARD';
 export const SET_ADJACENT_CELLS = 'SET_ADJACENT_CELLS';
@@ -13,9 +15,18 @@ const Cube = new Record({
   color: undefined,
 });
 
+export function clickCell(index) {
+
+  return {
+    type: CLICK_CELL, index
+  };
+
+}
 export function addCube(cells, cube) {
 
-    return {type: ADD_CUBE, cells, cube};
+    return {
+      type: ADD_CUBE, cells, cube
+    };
 
 }
 
@@ -44,73 +55,38 @@ export function setAdjacentCells(adjacentCells) {
     adjacentCells,
   }
 }
-export function helper(cube, cell, cells) {
-  addCubeToCell(cells[cell.index-1])();
-  addCubeToCell(cells[cell.index+1])();
-};
 
-export function  addCubeToCell (cell) {
 
+export function addCubeToCell(cell) {
   return (dispatch, getState) => {
-    const cells =  Object.keys( getState().cells).map(key =>  getState().cells[key]);
-    console.log();
 
-    const cube = makeCube(cell, cells.indexOf(cell), 'green');
-    if (cell.mass.length + 1 < cell.critical_mass) {
-    return dispatch(addCube(cells, cube));
-    } else {
-      const cells = getState().cells.cells;
-    //  return helper(cube, cell, cells);
-    }
+    const cells = Object.keys(getState().cells).map(key => getState().cells[key]);
+    let player_color = 'green';
+    let queue = [];
+    queue.unshift(cell);
+    do {
+      let _cell = queue.shift();
+      const cube = makeCube(_cell, cells.indexOf(_cell), player_color );
+      if(_cell.mass.length + 1 < _cell.critical_mass){
+        dispatch(addCube(cells, cube));
+      } else {
+        dispatch(addCube(cells, cube));
+        dispatch(clearCell(cells.indexOf(_cell)));
+        let neighbors = getNeighbors(cells,cells.indexOf(_cell));
+        queue.unshift(...neighbors);
+      }
+    } while (queue.length > 0);
   }
-}
-
-
-
-// export const addCubeToCell = (cell) => {
-//   return (dispatch, getState) => {
-//     const cube = makeCube(cell, 'green');
-//     if (!checkCell(cell)) {
-//       dispatch(addCube(cube));
-//     } else {
-//       const cells = getState().cells.cells;
-//       let stillChecking = true;
-//       while (stillChecking) {
-//         console.log('CHECKING AGAIN');
-//         for (var celly of cells) {
-//           if (checkCell(celly)) {
-//             dispatch(clearCell(celly.index));
-//             if(cells.indexOf(celly) > 0) {
-//               const leftCell = cells[cells.indexOf(celly) - 1];
-//                 dispatch(addCube(makeCube(leftCell, 'green')));
-//             }
-//             if(cells.indexOf(celly) < 99){
-//               dispatch(addCube(makeCube(cells[cells.indexOf(celly) + 1], 'green')));
-//             }
-//             if(cells.indexOf(celly) > 9) {
-//               dispatch(addCube(makeCube(cells[cells.indexOf(celly) - 10], 'green')));
-//             }
-//             if(cells.indexOf(celly) < 90) {
-//               dispatch(addCube(makeCube(cells[cells.indexOf(celly) + 10], 'green')));
-//             }
-//           }
-//           if (cells.indexOf(celly) === cells.length-1) {
-//             stillChecking = false;
-//           }
-//         }
-//       }
-//     }
-//   }
-// };
-
-
-
-export const checkCell=(cell)=>{
-  if (cell.mass.length + 1 === cell.critical_mass){
-    return true;
-  }
-  return false;
 };
+
+export function getNeighbors(cells, cellIndex){
+  return [
+    cells[cellIndex -1 ],
+    cells[cellIndex - 10],
+    cells[cellIndex + 1],
+    cells[cellIndex + 10],
+  ];
+}
 
 export const makeCube = (cell, index, color) => {
   if(cell){
@@ -127,24 +103,25 @@ export const mapAdjacentCells = () => {
   return(dispatch, getState) => {
     const indexes = Array.from(Array(100).keys());
     let adjacentCells = [];
-    for (var index of indexes) {
-      console.log(index);
-      let neighbors = [];
-      if (index - 1 > -1) {
-        neighbors.push(index - 1);
-      }
-      if (index + 1 < 100) {
-        neighbors.push(index + 1);
-      }
-      if (index - 10 > -1) {
-        neighbors.push(index - 10);
-      }
-      if (index + 10 < 100) {
-        neighbors.push(index + 10);
-      }
-      adjacentCells.push(neighbors);
-    }
-    dispatch(setAdjacentCells(adjacentCells));
+    //   for (var index of indexes) {
+    //     console.log(index);
+    //     let neighbors = [];
+    //     if (index - 1 > -1) {
+    //       neighbors.push(index - 1);
+    //     }
+    //     if (index + 1 < 100) {
+    //       neighbors.push(index + 1);
+    //     }
+    //     if (index - 10 > -1) {
+    //       neighbors.push(index - 10);
+    //     }
+    //     if (index + 10 < 100) {
+    //       neighbors.push(index + 10);
+    //     }
+    //     adjacentCells.push(neighbors);
+    //   }
+    //   dispatch(mapAdjacentCells(adjacentCells));
+    // }
   }
 };
 
@@ -184,4 +161,5 @@ export const mapDispatchToProps = {
     generateBoard,
     addCubeToCell,
     mapAdjacentCells,
+    clickCell,
 };

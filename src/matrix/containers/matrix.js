@@ -38,7 +38,7 @@ class Matrix extends Component {
        for ( var idx in cells) {
          let cell = cells[idx];
         renderedBoard.push(<Cell
-           addCubeToCell={() => this.props.addCubeToCell(cell)}
+           clickCell = {this.props.clickCell}
            key={idx}
            mass={cell.mass}
            cell = {cell}

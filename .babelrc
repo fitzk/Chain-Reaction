@@ -11,7 +11,8 @@
     "transform-flow-strip-types",
     "transform-class-properties",
     "react-hot-loader/babel",
-    "transform-es2015-spread"
+    "transform-es2015-spread",
+    "transform-async-to-generator"
   ],
   "highlightCode": true,
   "env": {

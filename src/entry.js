@@ -6,6 +6,7 @@ import {Provider} from 'react-redux';
 import Matrix from './matrix/containers/matrix';
 import thunk from 'redux-thunk';
 import reducer from './matrix/reducers.js';
+import "babel-polyfill";
 
 let middleware = [thunk];
 let store = createStore(reducer, compose(
