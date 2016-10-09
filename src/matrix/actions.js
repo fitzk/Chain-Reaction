@@ -52,7 +52,7 @@ export const _setPlayer = (player) => ({type: SET_PLAYER, player});
 
 export const play = () => (dispatch, getState) => {
   dispatch(turn());
-  window.setTimeout(()=>{dispatch(botTurn())}, 500);
+ // window.setTimeout(()=>{dispatch(botTurn())}, 500);
 };
 
 export const turn = () => (dispatch, getState) => {
@@ -62,7 +62,8 @@ export const turn = () => (dispatch, getState) => {
     dispatch(resolveCriticalMass());
     dispatch(endRound());
   }
-}
+};
+
 export const clickCell = (index) => (dispatch, getState) =>{
   let currentPlayer = getState().players.current_player;
   let owner = getState().cells[index].owner;
@@ -227,7 +228,6 @@ export const generateBoard = () => {
 };
 
 export const botTurn = () => (dispatch,getState) => {
-
     let new_index = Math.floor(Math.random() * 10 * getState().clickedCell.index % getState().clickedCell.index) + getState().clickedCell.index;
     if (new_index > 0 && new_index < 99 && new_index !== getState().clickedCell.index) {
       dispatch(_clickCell(new_index));
