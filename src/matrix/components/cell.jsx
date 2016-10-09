@@ -17,7 +17,7 @@ const Cell = props => {
     try {
       props.clickCell(props.index);
       props.play();
-    }catch (e){
+    }catch (e) {
       console.log(e);
     }
   };
