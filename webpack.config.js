@@ -27,6 +27,11 @@ module.exports = {
                 test: /\.scss$/,
                 exclude: /node_modules/,
                 loader: 'style!css'
+            },
+            {
+              test: /\.(jpe?g|png|gif|svg)$/i,
+              loader: 'file?name=[path][name].[hash].[ext]',
+              include: path.join(__dirname, 'src/assets/images/'),
             }
         ]
     },
