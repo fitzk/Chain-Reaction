@@ -14,4 +14,4 @@ npm install
 
 npm run dev
 
-Navigate to http://localhost:3000 on your nearest browser
+Navigate to http://localhost:8080 on your nearest browser
