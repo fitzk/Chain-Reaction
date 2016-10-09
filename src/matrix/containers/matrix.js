@@ -9,7 +9,8 @@ import _ from 'lodash';
 export const mapStateToProps = state =>{
   return {
     cells: state.cells,
-    adjacentCells: state.adjacentCells,
+    clickedCell: state.clickedCell,
+    criticalMass: state.criticalMass,
   }
 };
 
@@ -20,7 +21,6 @@ class Matrix extends Component {
     }
     componentDidMount() {
       this.props.generateBoard();
-      this.props.mapAdjacentCells();
     }
    componentWillReceiveProps(nextProps){
      if(_.isEmpty(this.props.cells)){
@@ -35,17 +35,19 @@ class Matrix extends Component {
     render() {
       let cells = this.props.cells;
       let renderedBoard = [];
-       for ( var idx in cells) {
-         let cell = cells[idx];
-        renderedBoard.push(<Cell
-           clickCell = {this.props.clickCell}
-           key={idx}
-           mass={cell.mass}
-           cell = {cell}
-           critical_mass={cell.critical_mass}/>);
-       }
-      return <div className="matrix">{renderedBoard}</div>;
-
+      if (cells) {
+        for (let cell of cells) {
+          renderedBoard.push(<Cell
+            clickCell = {this.props.clickCell}
+            play={this.props.play}
+            index={cells.indexOf(cell)}
+            key={cells.indexOf(cell)}
+            mass={cell.mass}
+            cell={cell}
+            critical_mass={cell.critical_mass}/>);
+        }
+      }
+        return <div className="matrix">{renderedBoard}</div>;
     }
 }
 

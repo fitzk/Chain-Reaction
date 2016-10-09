@@ -18,6 +18,17 @@ body {
   opacity: 1;
 }
 
+@keyframes green-cell {
+  from {
+    height: 0px;
+    width: 0px;
+  }
+  to {
+    height: 27px;
+    width: 27px;
+  }
+}
+
 .cell {
   height: 58px;
   width: 58px;
@@ -38,6 +49,9 @@ body {
 .green {
   background-color: lightgreen;
 }
+.yellow {
+  background-color: crimson;
+}
 
 .coral {
   background-color: coral;
@@ -49,5 +63,8 @@ body {
   height: 27px;
   width: 27px;
   margin: 1px;
-  transition-delay: 20000ms;
+  animation-duration: 500ms;
+  animation-name: green-cell;
+  animation-timing-function: ease-out;
 }
+

@@ -15,7 +15,7 @@ describe('Cell Actions',()=> {
       ]};
     const store = mockStore(initialState);
     let addPinkCube = {
-      type: 'ADD_CUBE',
+      type: 'ADD_CELL',
       cube: {
         index: 0,
         cell_index: 0,
