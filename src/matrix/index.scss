@@ -1,45 +1,80 @@
-
 body {
+  position: fixed;
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding: 100px;
-  background-color: lightcoral;
+  height: 100%;
+  background-color: floralwhite;
+  text-shadow: 2px 3px black;
+  letter-spacing: .2em;
+  color: coral;
+  font-family: Roboto, Arial, sans-serif;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  align-self: flex-start;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  justify-content: center;
+}
+
+.matrix {
+  align-self: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+  bottom: 20px;
+}
+
+.header {
+  margin-top: 20px;
+  align-self: center;
+  position: relative;
+  font-size: 4rem;
+  font-weight: 500;
 }
 
 .matrix {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  background: lightcoral;
   height: 600px;
   width: 600px;
-  border: white;
   opacity: 1;
 }
 
-@keyframes green-cell {
+@keyframes cell {
   from {
-    height: 0px;
-    width: 0px;
+    background-color: white;
+    position: relative;
+    left: 7px;
+    top: 7px;
   }
   to {
-    height: 27px;
-    width: 27px;
+    height: 24px;
+    width: 24px;
   }
 }
 
 .cell {
-  height: 58px;
-  width: 58px;
+  height: 55px;
+  width: 55px;
   margin: auto;
-  background: lightcyan;
-  border-color: lightcoral;
+  background: paleturquoise;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: flex-start;
   align-content: space-between;
+  overflow: hidden;
+  box-shadow: 1px 1px 1px 0px #7f7f7f;
 }
 
 .cell:hover {
@@ -47,10 +82,11 @@ body {
 }
 
 .green {
-  background-color: lightgreen;
+  background-color: cornflowerblue;
 }
+
 .crimson {
-  background-color: crimson;
+  background-color: lightsalmon;
 }
 
 .coral {
@@ -58,13 +94,15 @@ body {
 }
 
 .cube {
+  overflow: hidden;
   position: relative;
   z-index: 2;
-  height: 27px;
-  width: 27px;
+  height: 25px;
+  width: 25px;
   margin: 1px;
-  animation-duration: 500ms;
-  animation-name: green-cell;
-  animation-timing-function: ease-out;
+  animation-duration: 50ms;
+  animation-name: cell;
+  animation-timing-function: ease-in-out;
+  box-shadow: .5px .5px .5px 0 #2e2e2e;
 }
 

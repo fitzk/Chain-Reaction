@@ -20,6 +20,7 @@
     "reselect": "^2.5.4"
   },
   "scripts": {
+    "build": "webpack -p --config ./webpack.config.js",
     "debug": "webpack --progress --profile --colors --display-error-details --display-cached --config ./webpack.config.js",
     "dev": "webpack-dev-server -w --hot --progress --profile --colors --display-error-details --config ./webpack.config.js"
   },

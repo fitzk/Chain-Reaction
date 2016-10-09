@@ -38,8 +38,6 @@ export const players = (state = {current_player: 0, total_players: 2}, action) =
 
 export const cells = (state = [], action) => {
   switch (action.type) {
-    case UPDATE_CELLS:
-      return Object.assign([], state, action.cells);
     case ADD_CELL:
       return Object.assign([], state, action.cells[action.index] = action.cell);
     case CLEAR_CELL:

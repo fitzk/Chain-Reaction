@@ -14,7 +14,6 @@ export const mapStateToProps = state =>{
   }
 };
 
-
 class Matrix extends Component {
     constructor(props){
         super(props);
@@ -47,7 +46,12 @@ class Matrix extends Component {
             critical_mass={cell.critical_mass}/>);
         }
       }
-        return <div className="matrix">{renderedBoard}</div>;
+      return (
+        <div className="container">
+          <div className="header">CHAIN REACTION</div>
+         <div className="matrix">{renderedBoard}</div>
+        </div>
+      );
     }
 }
 

@@ -11,6 +11,7 @@ export function _clickCell(clickedCell) {
     type: CLICK_CELL, clickedCell
   };
 }
+
 export const _badMove =()=>({type:'BAD_MOVE'});
 
 export function _addCell(cells, index, cell) {
@@ -50,8 +51,15 @@ const formatCells = (getState) => {
 export const _setPlayer = (player) => ({type: SET_PLAYER, player});
 
 export const play = () => (dispatch, getState) => {
+  dispatch(turn());
+ // window.setTimeout(()=>{dispatch(botTurn())}, 500);
+};
+
+export const turn = () => (dispatch, getState) => {
   if(getState().clickedCell !== null) {
     dispatch(addCubeToCell());
+    dispatch(checkCriticalMass(getState().clickedCell.index));
+    dispatch(resolveCriticalMass());
     dispatch(endRound());
   }
 };
@@ -89,6 +97,7 @@ export const endRound = () => (dispatch, getState) => {
   if (current_player === 0) {
     next_player = 1;
   }
+  console.log(next_player);
   dispatch(_setPlayer(next_player));
 };
 
@@ -99,17 +108,12 @@ export const addCubeToCell = () => (dispatch, getState) => {
   const color = getPlayerColor(player);
   const clicked_cell_index = getState().clickedCell.index;
 
+  const old_cell = cells[clicked_cell_index];
+  const new_cube = makeCube(old_cell, old_cell.mass.length, clicked_cell_index, color);
 
-    const old_cell = cells[clicked_cell_index];
-    const new_cube = makeCube(old_cell, old_cell.mass.length, clicked_cell_index, color);
+  let new_cell = makeCell(old_cell.critical_mass, [...old_cell.mass, new_cube], player);
 
-    let new_cell = makeCell(old_cell.critical_mass, [...old_cell.mass, new_cube], player);
-
-    dispatch(_addCell(cells, clicked_cell_index, new_cell));
-    dispatch(checkCriticalMass(clicked_cell_index));
-    dispatch(resolveCriticalMass());
-
-
+  dispatch(_addCell(cells, clicked_cell_index, new_cell));
 };
 
 const resolveCriticalMass = () => (dispatch, getState) => {
@@ -117,16 +121,18 @@ const resolveCriticalMass = () => (dispatch, getState) => {
   if (critical_mass.length > 0) {
     let index = critical_mass.pop();
     let old_cell = getState().cells[index];
-    let clear_cell=makeCell(old_cell.critical_mass,[],null);
+    let clear_cell = makeCell(old_cell.critical_mass,[],null);
     dispatch(clearCell(getState().cells, index, clear_cell));
     let neighbors = getNeighbors(index);
     for (let neighbor of neighbors) {
       dispatch(attemptTakeOver(neighbor));
       dispatch(_clickCell(neighbor));
       dispatch(addCubeToCell());
+      dispatch(checkCriticalMass(getState().clickedCell.index));
+      dispatch(resolveCriticalMass());
     }
   }
-  _updateCriticalMass([]);
+   _updateCriticalMass([]);
 };
 
 const checkCriticalMass = (index) => (dispatch, getState) => {
@@ -137,6 +143,7 @@ const checkCriticalMass = (index) => (dispatch, getState) => {
     dispatch(_updateCriticalMass(criticalMass));
   }
 };
+
 export const makeCell = (critical_mass, mass, owner) => {
   return {
     critical_mass,
@@ -144,6 +151,7 @@ export const makeCell = (critical_mass, mass, owner) => {
     owner
   };
 };
+
 export const makeCube = (cell, cube_index, cell_index, color) => {
   if (cell) {
     return {
@@ -165,14 +173,27 @@ export const attemptTakeOver = (index) => (dispatch, getState) => {
       new_mass.push(new_cube);
     }
     let old_cell = getState().cells[index];
-    let clear_cell=makeCell(old_cell.critical_mass,[],null);
-    dispatch(clearCell(getState().cells, index, clear_cell));
     let cell = makeCell(neighbor_cell.critical_mass, new_mass, current_player);
     dispatch(_addCell(getState().cells, index, cell));
   }
 };
 
 export function getNeighbors(cellIndex) {
+
+  const top_row = [1, 2, 3, 4, 5, 6, 7, 8];
+  const left_col = [10, 20, 30, 40, 50, 60, 70, 80];
+  const right_col = [19, 29, 39, 49, 59, 69, 79, 89];
+  const bottom_row = [91, 92, 93, 94, 95, 96, 97, 98];
+  const corners = [0, 9, 90, 99];
+
+  if (top_row.includes(cellIndex)) return [cellIndex - 1, cellIndex + 10, cellIndex + 1];
+  if (bottom_row.includes(cellIndex)) return [cellIndex - 1, cellIndex - 10, cellIndex + 1];
+  if (left_col.includes(cellIndex)) return [cellIndex - 10, cellIndex+1, cellIndex+10];
+  if (right_col.includes(cellIndex)) return [cellIndex - 10, cellIndex-1, cellIndex+10]
+  if (cellIndex === 0) return [10,1];
+  if (cellIndex === 9) return [8,19];
+  if (cellIndex === 90) return [80, 91];
+  if (cellIndex === 99) return [98,89];
   return [cellIndex - 1, cellIndex - 10, cellIndex + 1, cellIndex + 10];
 }
 
@@ -206,6 +227,13 @@ export const generateBoard = () => {
   }
 };
 
+export const botTurn = () => (dispatch,getState) => {
+    let new_index = Math.floor(Math.random() * 10 * getState().clickedCell.index % getState().clickedCell.index) + getState().clickedCell.index;
+    if (new_index > 0 && new_index < 99 && new_index !== getState().clickedCell.index) {
+      dispatch(_clickCell(new_index));
+      dispatch(turn());
+    }
+};
 
 export const mapDispatchToProps = {
   generateBoard,
