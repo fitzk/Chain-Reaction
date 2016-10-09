@@ -1,12 +1,10 @@
 # CHAIN REACTION
+JavaScript, (React + Redux) implementation of the game Chain Reaction.
 
-### JavaScript, (React + Redux) implementation of the game Chain Reaction.
-
-# STATUS
-In development
+Play the game [here](https://chain-reaction-ef2d2.firebaseapp.com/).
 
 
-## GET 'R RUNNIN
+## Development
 
 git clone https://github.com/DailyGrind/Chain-Reaction.git
 
