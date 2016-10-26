@@ -36,7 +36,12 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: ["", ".jsx", ".js", ".json"]
+        extensions: ["", ".jsx", ".js", ".json"],
+      alias: {
+        src: path.resolve(__dirname, 'src'),
+        images: path.resolve(__dirname, 'src/assets/images'),
+        matrix: path.resolve(__dirname, 'src/matrix')
+      }
     },
     devServer: {
         colors: true,

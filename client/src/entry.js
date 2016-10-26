@@ -3,9 +3,9 @@ import {Route, Router, browserHistory} from 'react-router';
 import ReactDOM from 'react-dom';
 import {applyMiddleware, createStore, compose} from 'redux';
 import {Provider} from 'react-redux';
-import Matrix from './matrix/containers/matrix';
+import Matrix from 'matrix/containers/matrix.js';
 import thunk from 'redux-thunk';
-import reducer from './matrix/reducers.js';
+import reducer from 'matrix/reducers.js';
 import "babel-polyfill";
 
 let middleware = [thunk];

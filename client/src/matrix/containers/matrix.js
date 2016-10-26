@@ -1,11 +1,11 @@
 import {connect} from 'react-redux';
 import React, {Component, PropTypes} from 'react';
-import {mapDispatchToProps} from '../actions';
+import {mapDispatchToProps} from 'matrix/actions';
 import _ from 'lodash';
 
-import Cell from '../components/cell';
-import '../index.scss';
-import GitLogo from '../../assets/images/github-logo.png';
+import Cell from 'matrix/components/cell';
+import 'matrix/index.scss';
+import GitLogo from 'images/github-logo.png';
 
 
 export const mapStateToProps = state => {
