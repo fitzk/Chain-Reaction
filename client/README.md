@@ -1,6 +1,7 @@
 # CHAIN REACTION
 JavaScript, (React + Redux) implementation of the game Chain Reaction.
 
+[Instructions](https://brilliant.org/wiki/chain-reaction-game/)
 Play the game [here](https://chain-reaction-ef2d2.firebaseapp.com/).
 
 
