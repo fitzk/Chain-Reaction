@@ -7,14 +7,13 @@ module.exports = {
     path: path.join(__dirname, 'public'),
     filename: "bundle.js"
   },
-  watch: true,
   module: {
-    loaders: [
+    rules: [
       {
-        loader: 'babel',
+        loader: 'babel-loader',
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        query: {
+        options: {
           presets: ['env']
         }
       },
@@ -24,18 +23,17 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        exclude: /node_modules/,
-        loader: 'style!css'
+        loader: 'style-loader!css-loader'
       },
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
-        loader: 'file?name=[path][name].[hash].[ext]',
+        loader: 'file-loader',
         include: path.join(__dirname, 'src/assets/images/'),
       }
     ]
   },
   resolve: {
-    extensions: ["", ".jsx", ".js", ".json"],
+    extensions: [".jsx", ".js", ".json"],
     alias: {
       src: path.resolve(__dirname, 'src'),
       pages: path.resolve(__dirname, 'src/pages'),
@@ -46,9 +44,8 @@ module.exports = {
     }
   },
   devServer: {
-    colors: true,
     historyApiFallback: true,
-    contentBase: 'build'
+    contentBase: 'public'
   }
 };
 

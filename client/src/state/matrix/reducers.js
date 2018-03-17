@@ -1,72 +1,46 @@
-import {combineReducers} from 'redux';
-import {
-  RESET_BOARD,
-  ADD_CELL,
-  CLEAR_CELL,
-  CLICK_CELL,
-  CRITICAL_MASS,
-  SET_PLAYER
-} from './actions.js';
+import t from './actions/types';
+import * as c from 'src/state/constants';
 
-export const clickedCell = (state = {}, action) => {
-  switch (action.type) {
-    case CLICK_CELL:
-      let clickedCell = action.clickedCell;
-      return Object.assign({}, state, {index: clickedCell});
-    default:
-      return state;
-  }
-};
-
-export const criticalMass = (state = [], action) => {
-  switch (action.type) {
-    case CRITICAL_MASS:
-      return Object.assign([], state, action.criticalMass);
-    default:
-      return state;
-  }
-};
-
-export const players = (state = {
-                          current_player: 0,
-                          total_players: 2
-                        },
-                        action) => {
-  switch (action.type) {
-    case SET_PLAYER:
-      return Object.assign({}, state, {current_player: action.player});
-    default:
-      return state;
-  }
-};
-
-export const cells = (state = [], action) => {
-  switch (action.type) {
-    case ADD_CELL:
-      return Object.assign(
-        [],
-        state,
-        (action.cells[action.index] = action.cell)
-      );
-    case CLEAR_CELL:
-      return Object.assign(
-        [],
-        state,
-        (action.cells[action.index] = action.cell)
-      );
-    case RESET_BOARD:
-      return Object.assign([], state, [...action.cells]);
-    default:
-      return state;
-  }
-};
-
-
-const matrix = combineReducers({
+const initMatrix = ({
+  cells = {
+    allIds: [],
+    byId: {}
+  },
+  inprogress = false,
+  selectedCell,
+  cubes = c.DEFAULT_CUBE_COUNT
+} = {}) => ({
   cells,
-  clickedCell,
-  criticalMass,
-  players
+  selectedCell,
+  cubes
 });
+
+const matrix = (state = initMatrix(), action) => {
+  switch (action.type) {
+    case 'matrix/STARTING_CASCADE':
+    case 'matrix/FINISHED_CASCADE':
+    case t.UPDATE_CELLS:
+    case t.STORE_SELECTED_CELL:
+    case t.COUNT_CUBES:
+    case t.RESET_CUBE_COUNT:
+      return {
+        ...state,
+        ...action.payload
+      };
+    case t.UPDATE_CELL:
+      return {
+        ...state,
+        cells: {
+          ...state.cells,
+          byId: {
+            ...state.cells.byId,
+            [action.payload.cell.id]: action.payload.cell
+          }
+        }
+      };
+    default:
+      return state;
+  }
+};
 
 export default matrix;

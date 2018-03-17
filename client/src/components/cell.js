@@ -1,27 +1,20 @@
-import React, {Proptypes} from 'react';
+import React from 'react';
 import Cube from './cube';
 
-const Cell = props => {
-  let cubes;
-  if(props.mass) {
-      cubes = props.mass.map(
-        cube => (
-          <Cube key={cube.index} className={`${cube.color} cube`}/>
-        )
-      );
-  let onClickWrapper = (e) => {
-    try {
-      props.clickCell(props.index);
-      props.play();
-    }catch (e) {
-      console.log(e);
-    }
-  };
-  return (
-    <div onClick={onClickWrapper} className="cell">
-    {cubes}
-    </div>
-  );
-}
+const Cell = props => (
+  <div
+    onClick={() => props.clickCell(props.index)}
+    className="animated zoomInUp cell"
+  >
+    {props.mass
+      ? props.mass.map(cube => (
+          <Cube
+            key={cube.index + props.cell.id}
+            className={`${cube.color} cube`}
+          />
+        ))
+      : null}
+  </div>
+);
 
 export default Cell;

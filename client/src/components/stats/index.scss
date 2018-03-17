@@ -1,0 +1,56 @@
+.stats-container {
+  border: solid black 1px;
+  padding: 1em;
+  border-radius: 5px;
+  background-color: white;
+  align-self: flex-start;
+  margin-left: 2em;
+  height: 38em;
+}
+
+.stats {
+  font-family: sans-serif;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1em;
+}
+
+.count {
+  color: white;
+  font-weight: bold;
+  font-size: 1.2em;
+  letter-spacing: -1px;
+}
+
+.big-cube {
+  transition: unset;
+  transition-delay: unset;
+  width: 130px;
+  height: 130px;
+  margin: 0.5em;
+  border: 1px solid black;
+}
+
+.med-cube {
+  border: 1px solid black;
+  width: 55px;
+  height: 55px;
+  margin: 0.5em;
+}
+
+.new-game-button {
+  height: 4em;
+  width: 11em;
+  font-size: 0.8rem;
+  align-self: center;
+  color: black;
+  border: 1px solid black;
+  box-shadow: 1px 1px 1px 0px #7f7f7f;
+  border-radius: 5px;
+}
+
+.botsonly {
+  visibility: hidden;
+}
